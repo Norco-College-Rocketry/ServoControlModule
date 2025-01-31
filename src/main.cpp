@@ -30,21 +30,20 @@ uint servos[NUM_SERVOS] = { PIN_SERVO_1, PIN_SERVO_2 };
 Adafruit_MCP2515 can(PIN_CAN_CS);
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 
   Serial.begin(9600);
 
   // Initialize CAN transceiver
   while(!can.begin(CAN_BAUD)) {
-    digitalWrite(LED_BUILTIN, HIGH);
     Serial.println("Error initializing MCP2515.");
     delay(100);
   }
-  digitalWrite(LED_BUILTIN, LOW);
   Serial.println("MCP2515 found.");
   can.onReceive(PIN_CAN_INTERRUPT, on_can_received);
 
   // Configure GPIO and PWM slices
+  pinMode(LED_BUILTIN, OUTPUT);
   for (size_t i=0; i<NUM_SERVOS; i++) {
     gpio_set_function(servos[i], GPIO_FUNC_PWM);
     pwm_set_gpio_level(servos[i], CC_LOW);
@@ -53,6 +52,8 @@ void setup() {
     pwm_set_clkdiv_int_frac4(slice, DIV_INT, DIV_FRAC);
     pwm_set_enabled(slice, true);
   }
+  
+  digitalWrite(LED_BUILTIN, LOW);
 }
 
 void loop() {
