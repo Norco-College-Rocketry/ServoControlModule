@@ -84,7 +84,8 @@ void on_can_received(int packet_size) {
 
       if (id == SERVO_1_ID) { 
         move_servo(PIN_SERVO_1, position ? DEG_OPEN : DEG_CLOSED);
-      } else if (id == SERVO_2_ID) {
+      }
+      if (id == SERVO_2_ID) {
         move_servo(PIN_SERVO_2, position ? DEG_OPEN : DEG_CLOSED);        
       }
     } break;
